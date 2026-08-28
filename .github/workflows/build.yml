@@ -16,9 +16,13 @@ permissions:
   contents: read
 
 jobs:
-  phpunit:
-    uses: yii2-framework/actions/.github/workflows/phpunit.yml@a28eb7d4ab03abd53ccd7c79014b3b27d09932ff # v2.0.1
+  codeception:
+    uses: yii2-framework/actions/.github/workflows/codeception.yml@a28eb7d4ab03abd53ccd7c79014b3b27d09932ff # v2.0.1
     with:
+      codeception-command: >-
+        APP_ENV=test APP_DEBUG=false VITE_DEV_SERVER=true
+        vendor/bin/codecept run Web --coverage-xml
+      extensions: intl, sodium
       php-version: '["8.3","8.4","8.5"]'
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

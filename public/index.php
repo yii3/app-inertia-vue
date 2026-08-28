@@ -1,0 +1,87 @@
+<?php
+
+declare(strict_types=1);
+
+use Dotenv\Dotenv;
+use Psr\Log\LogLevel;
+use Yiisoft\ErrorHandler\ErrorHandler;
+use Yiisoft\ErrorHandler\Renderer\HtmlRenderer;
+use Yiisoft\Log\{Logger, StreamTarget};
+use Yiisoft\Yii\Runner\Http\HttpApplicationRunner;
+
+$root = dirname(__DIR__);
+
+if (filter_var(getenv('YII_C3'), FILTER_VALIDATE_BOOL)) {
+    require_once $root . '/c3.php';
+}
+
+require_once $root . '/vendor/autoload.php';
+
+$dotenv = Dotenv::createImmutable($root);
+
+$dotenv->safeLoad();
+
+$dotenv
+    ->ifPresent('APP_ENV')
+    ->allowedValues(
+        [
+            'dev',
+            'test',
+            'prod',
+        ],
+    );
+$dotenv
+    ->ifPresent(
+        [
+            'APP_DEBUG',
+            'VITE_DEV_SERVER',
+        ],
+    )
+    ->isBoolean();
+
+$environment = $_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? 'prod';
+
+$environment = is_string($environment) ? $environment : 'prod';
+$debug = filter_var($_SERVER['APP_DEBUG'] ?? $_ENV['APP_DEBUG'] ?? false, FILTER_VALIDATE_BOOL);
+
+// PHP built-in server routing.
+if (PHP_SAPI === 'cli-server') {
+    // Serve static files as is.
+    $requestUri = $_SERVER['REQUEST_URI'] ?? '/';
+
+    $requestUri = is_string($requestUri) ? $requestUri : '/';
+    $path = parse_url($requestUri, PHP_URL_PATH);
+
+    if (is_string($path) && is_file(__DIR__ . $path)) {
+        return false;
+    }
+
+    // Explicitly set for URLs with dot.
+    $_SERVER['SCRIPT_NAME'] = '/index.php';
+}
+
+// Run HTTP application runner
+$runner = new HttpApplicationRunner(
+    rootPath: $root,
+    debug: $debug,
+    checkEvents: $debug,
+    environment: $environment,
+    bootstrapGroup: 'bootstrap',
+    temporaryErrorHandler: new ErrorHandler(
+        new Logger(
+            [
+                (new StreamTarget())
+                    ->setLevels(
+                        [
+                            LogLevel::EMERGENCY,
+                            LogLevel::ERROR,
+                            LogLevel::WARNING,
+                        ],
+                    ),
+            ],
+        ),
+        new HtmlRenderer(),
+    ),
+);
+
+$runner->run();

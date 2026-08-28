@@ -1,0 +1,10 @@
+actor: WebTester
+extensions:
+  enabled:
+    - Codeception\Extension\RunProcess:
+        0: php ./yii serve --port=28081
+        sleep: 2
+modules:
+  enabled:
+    - PhpBrowser:
+        url: http://127.0.0.1:28081
