@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Web\NotFound\NotFoundHandler;
 use App\Web\Workbench\HomeAction;
-use Yii3\Debug\Middleware\ToolbarMiddleware;
 use Yii3\Debug\Web\LocalAccessChecker;
 use Yii3\Inertia\Middleware\{CsrfTokenCookieMiddleware, InertiaMiddleware};
 use Yiisoft\Csrf\CsrfTokenMiddleware;
@@ -18,7 +17,6 @@ use Yiisoft\Session\SessionMiddleware;
 use Yiisoft\Yii\Http\Application;
 
 $middlewares = [
-    ToolbarMiddleware::class,
     InertiaMiddleware::class,
     ErrorCatcher::class,
     SessionMiddleware::class,

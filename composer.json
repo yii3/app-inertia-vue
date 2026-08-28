@@ -63,8 +63,7 @@
         "phpstan/phpstan": "^2.2.9",
         "phpstan/phpstan-strict-rules": "^2.0.12",
         "rector/rector": "^2.6.4",
-        "symfony/process": "^7.4.13 || ^8.1.5",
-        "yii3/debug": "^0.1"
+        "symfony/process": "^7.4.13 || ^8.1.5"
     },
     "autoload": {
         "psr-4": {
