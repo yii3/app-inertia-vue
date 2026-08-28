@@ -6,7 +6,12 @@ use PHPForge\Vite\Configuration\{DevelopmentConfiguration, ProductionConfigurati
 use PHPForge\Vite\Vite;
 
 $entrypoints = ['resources/js/app.ts'];
-$viteDevServer = $_SERVER['VITE_DEV_SERVER'] ?? $_ENV['VITE_DEV_SERVER'] ?? false;
+
+$viteDevServer = getenv('VITE_DEV_SERVER');
+
+if ($viteDevServer === false) {
+    $viteDevServer = $_SERVER['VITE_DEV_SERVER'] ?? $_ENV['VITE_DEV_SERVER'] ?? false;
+}
 
 $configuration = filter_var($viteDevServer, FILTER_VALIDATE_BOOL)
     ? DevelopmentConfiguration::create(

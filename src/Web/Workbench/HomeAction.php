@@ -8,7 +8,6 @@ use DateTimeImmutable;
 use DateTimeZone;
 use PHPForge\Inertia\Prop\{Prop, ScrollMetadata, ScrollProp};
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
-use Yii3\Debug\Web\LocalAccessChecker;
 use Yii3\Inertia\Inertia;
 
 use function array_slice;
