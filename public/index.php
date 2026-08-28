@@ -11,6 +11,10 @@ use Yiisoft\Yii\Runner\Http\HttpApplicationRunner;
 
 $root = dirname(__DIR__);
 
+if (filter_var(getenv('YII_C3'), FILTER_VALIDATE_BOOL)) {
+    require_once $root . '/c3.php';
+}
+
 require_once $root . '/vendor/autoload.php';
 
 $dotenv = Dotenv::createImmutable($root);
@@ -69,11 +73,11 @@ $runner = new HttpApplicationRunner(
                 (new StreamTarget())
                     ->setLevels(
                         [
-                        LogLevel::EMERGENCY,
-                        LogLevel::ERROR,
-                        LogLevel::WARNING,
-                    ],
-                ),
+                            LogLevel::EMERGENCY,
+                            LogLevel::ERROR,
+                            LogLevel::WARNING,
+                        ],
+                    ),
             ],
         ),
         new HtmlRenderer(),

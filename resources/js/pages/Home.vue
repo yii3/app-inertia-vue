@@ -665,13 +665,13 @@ function replayRequest(): void {
                                     aria-live="polite"
                                 >
                                     <span aria-hidden="true"></span>
-                                    {{
-                                        loading
-                                            ? "Loading the next slice…"
-                                            : hasMore
-                                              ? "Keep scrolling"
-                                              : "Flow complete"
-                                    }}
+                                    <template v-if="loading">
+                                        Loading the next slice…
+                                    </template>
+                                    <template v-else-if="hasMore">
+                                        Keep scrolling
+                                    </template>
+                                    <template v-else>Flow complete</template>
                                 </div>
                             </template>
                         </InfiniteScroll>
