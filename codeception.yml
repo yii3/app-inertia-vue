@@ -1,0 +1,19 @@
+namespace: App\Tests
+support_namespace: Support
+
+settings:
+  colors: true
+
+paths:
+  tests: tests
+  output: tests/_output
+  data: tests/Support/Data
+  support: tests/Support
+
+coverage:
+  enabled: true
+  show_uncovered: true
+  show_only_summary: true
+  include:
+    - src/*
+    - public/index.php

@@ -1,7 +1,30 @@
 {
     "Exclude": [
+        "\\.min\\.css$",
+        "\\.min\\.js$",
+        "^\\.ci/",
+        "^\\.claude/",
+        "^\\.codex/",
+        "^\\.config/gh/",
+        "^\\.github/agents/",
+        "^\\.github/copilot-instructions\\.md$",
+        "^\\.github/copilot/",
+        "^\\.github/instructions/",
+        "^\\.github/prompts/",
+        "^\\.github/skills/",
+        "^\\.vscode/",
+        "^code_coverage/",
         "^composer\\.lock$",
+        "^c3\\.php$",
+        "^LICENSE(?:\\..*)?$",
+        "^node_modules/",
+        "^package-lock\\.json$",
+        "^public/build/",
         "^runtime/",
-        "^vendor/"
+        "^tests/Support/_generated/",
+        "^tests/_output/",
+        "^vendor/",
+        "phpstan-baseline\\.neon$",
+        "scaffold-lock\\.json$"
     ]
 }

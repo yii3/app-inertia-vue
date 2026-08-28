@@ -2,15 +2,16 @@
 version: 2
 updates:
   # Maintain dependencies for GitHub Actions
-  - package-ecosystem: "github-actions"
-    directory: "/"
+  - package-ecosystem: github-actions
+    directory: /
     schedule:
-      interval: "daily"
+      interval: daily
     cooldown:
       default-days: 7
     groups:
       github-actions:
-        patterns: ["*"]
+        patterns:
+          - "*"
 
   # Maintain dependencies for Composer
   - package-ecosystem: "composer"
@@ -19,4 +20,19 @@ updates:
       interval: "daily"
     cooldown:
       default-days: 7
+    groups:
+      composer:
+        patterns: ["*"]
     versioning-strategy: increase-if-necessary
+
+  # Maintain dependencies for npm
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: daily
+    cooldown:
+      default-days: 7
+    groups:
+      npm:
+        patterns:
+          - "*"

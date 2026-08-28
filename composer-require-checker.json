@@ -1,16 +1,21 @@
 {
-    "symbol-whitelist": [],
+    "symbol-whitelist": [
+        "Yii3\\Debug\\Middleware\\ToolbarMiddleware"
+    ],
     "php-core-extensions": [
         "Core",
         "date",
+        "filter",
         "json",
-        "hash",
         "pcre",
         "Phar",
+        "random",
         "Reflection",
         "SPL",
-        "random",
         "standard"
     ],
-    "scan-files": []
+    "scan-files": [
+        "public/index.php",
+        "yii"
+    ]
 }

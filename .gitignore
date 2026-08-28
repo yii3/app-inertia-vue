@@ -2,6 +2,9 @@
 .codex
 .claude
 
+# build output
+public/build
+
 # codecoverage (if present)
 code_coverage
 
@@ -18,6 +21,9 @@ composer.lock
 .github/instructions/**
 .github/prompts/**
 .github/skills/**
+
+# local environment
+.env
 
 # mac ds_store (if present)
 .DS_Store

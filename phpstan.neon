@@ -2,18 +2,21 @@ includes:
     - phar://phpstan.phar/conf/bleedingEdge.neon
 
 parameters:
-    bootstrapFiles:
-        - tests/bootstrap.php
-
     level: max
 
     paths:
+        - config
+        - public
         - src
         - tests
+        - yii
 
-    tmpDir: %currentWorkingDirectory%/runtime
+    excludePaths:
+        analyse:
+            - tests/Support/_generated/*
 
-    # Enable strict advanced checks
+    tmpDir: %currentWorkingDirectory%/runtime/phpstan
+
     checkImplicitMixed: true
     checkBenevolentUnionTypes: true
     checkUninitializedProperties: true

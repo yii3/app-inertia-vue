@@ -1,82 +1,127 @@
-<!-- markdownlint-disable MD041 -->
-<p align="center">
-    <picture>
-        <source media="(prefers-color-scheme: dark)" srcset="https://www.yiiframework.com/image/design/logo/yii3_full_for_dark.svg">
-        <source media="(prefers-color-scheme: light)" srcset="https://www.yiiframework.com/image/design/logo/yii3_full_for_light.svg">
-        <img src="https://www.yiiframework.com/image/design/logo/yii3_full_for_light.svg" alt="Yii Framework" width="80%">
-    </picture>
-    <h1 align="center">Template</h1>
-    <br>
-</p>
-<!-- markdownlint-enable MD041 -->
+# Yii 3 Inertia Vue application
 
-<p align="center">
-    <a href="https://github.com/yii2-extensions/template/actions/workflows/build.yml" target="_blank">
-        <img src="https://img.shields.io/github/actions/workflow/status/yii2-extensions/template/build.yml?style=for-the-badge&label=PHPUnit&logo=github" alt="PHPUnit">
-    </a>
-    <a href="https://dashboard.stryker-mutator.io/reports/github.com/yii2-extensions/template/main" target="_blank">
-        <img src="https://img.shields.io/endpoint?style=for-the-badge&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fyii2-extensions%2Ftemplate%2Fmain" alt="Mutation Testing">
-    </a>
-    <a href="https://github.com/yii2-extensions/template/actions/workflows/static.yml" target="_blank">
-        <img src="https://img.shields.io/github/actions/workflow/status/yii2-extensions/template/static.yml?style=for-the-badge&label=PHPStan&logo=github" alt="PHPStan">
-    </a>
-    <a href="https://github.com/yii2-extensions/template/actions/workflows/security.yml" target="_blank">
-        <img src="https://img.shields.io/github/actions/workflow/status/yii2-extensions/template/security.yml?style=for-the-badge&label=Security&logo=github" alt="Security">
-    </a>
-</p>
+`yii3/app-inertia-vue` is a reference application that integrates Yii 3,
+Inertia.js 3, Vue 3.5, TypeScript, and Vite 8. Yii owns routing and page data,
+Inertia carries page responses and navigation state, and Vue renders the
+interactive interface.
 
-<p align="center">
-    <strong>A Yii2 extension template to create your own Yii2 extensions</strong><br>
-    <em>PHPUnit, PHPStan, Codeception, and best practices ready out of the box</em>
-</p>
+## Home page
 
-## Features
+The home page demonstrates the integration with working application behavior:
 
-<picture>
-    <source media="(min-width: 768px)" srcset="./docs/svgs/features.svg">
-    <img src="./docs/svgs/features-mobile.svg" alt="Feature Overview" style="width: 100%;">
-</picture>
+- **Architecture** presents a constructor-injected invokable action and the
+  explicit PSR-15 middleware pipeline that handles each request.
+- **Stack** shows the Yii, Inertia, Vue, and Vite responsibilities in one
+  server-driven request flow.
+- **Partial reloads** refresh only the `runtime` page prop while preserving the
+  persistent layout, deferred data, and scroll position.
+- **Deferred props** resolve the `ecosystem` diagnostics group after the first
+  response, with an accessible loading state in Vue.
+- **Infinite scroll** exposes `requestFeed` through `Prop::scroll()`. The server
+  provides cursor metadata, Inertia merges `requestFeed.data`, and Vue appends
+  each three-event page inside a contained scroll region.
+- **Explore** links to the local debugger when access is allowed, the official
+  Yii 3 guide, the neutral Yii 2 upgrade guide, and the application source.
+- A persistent light and dark theme follows the operating-system preference
+  until the visitor chooses a mode, then stores that choice locally.
 
-## Quick start
+## Requirements
 
-### Installation
+- PHP 8.3 or later.
+- Composer 2.
+- Node.js 22.12 or later.
 
-```bash
-composer require github_username/github_repository-name
+## Install locally
+
+Install the locked PHP and frontend dependencies, build the production assets,
+and create the local environment file:
+
+```shell
+composer install
+npm ci
+npm run build
+cp .env.example .env
 ```
 
-### Basic Usage
+Start the application on port 8081:
 
-Describe how to use your extension in a basic way.
+```shell
+./yii serve
+```
 
-## Documentation
+Open [http://localhost:8081](http://localhost:8081).
 
-For detailed configuration options and advanced usage.
+## Vite development server
 
-- 📚 [Installation Guide](docs/installation.md)
-- ⚙️ [Configuration Reference](docs/configuration.md)
-- 💡 [Usage Examples](docs/examples.md)
-- 🧪 [Testing Guide](docs/testing.md)
-- 🛠️ [Development Guide](docs/development.md)
+For hot module replacement, set `VITE_DEV_SERVER=true` in `.env`, then run the
+Vite and Yii development servers in separate terminals:
 
-## Package information
+```shell
+npm run dev
+```
 
-[![PHP](https://img.shields.io/badge/%3E%3D8.3-777BB4.svg?style=for-the-badge&logo=php&logoColor=white)](https://www.php.net/releases/8.3/en.php)
-[![Yii 22.0.x](https://img.shields.io/badge/22.0.x-0073AA.svg?style=for-the-badge&logo=yii&logoColor=white)](https://github.com/yiisoft/yii2/tree/22.0)
-[![Latest Stable Version](https://img.shields.io/packagist/v/yii2-extensions/template.svg?style=for-the-badge&logo=packagist&logoColor=white&label=Stable)](https://packagist.org/packages/yii2-extensions/template)
-[![Total Downloads](https://img.shields.io/packagist/dt/yii2-extensions/template.svg?style=for-the-badge&logo=composer&logoColor=white&label=Downloads)](https://packagist.org/packages/yii2-extensions/template)
+```shell
+./yii serve
+```
 
-## Project status
+The PHP application continues to own routing and the initial HTML response.
+Vite serves the Vue entrypoint and hot updates. In production mode,
+`PHPForge\Vite\Vite` reads `public/build/.vite/manifest.json`; the manifest
+modification time also provides the Inertia asset version.
 
-[![Codecov](https://img.shields.io/codecov/c/github/yii2-extensions/template.svg?style=for-the-badge&logo=codecov&logoColor=white&label=Coverage)](https://codecov.io/github/yii2-extensions/template)
-[![PHPStan Level Max](https://img.shields.io/badge/PHPStan-Level%20Max-4F5D95.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/yii2-extensions/template/actions/workflows/static.yml)
-[![Quality](https://img.shields.io/github/actions/workflow/status/yii2-extensions/template/quality.yml?style=for-the-badge&label=Quality&logo=github)](https://github.com/yii2-extensions/template/actions/workflows/quality.yml)
-[![StyleCI](https://img.shields.io/badge/StyleCI-Passed-44CC11.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.styleci.io/repos/698621511?branch=main)
+## Debugger
 
-## Our social networks
+`yii3/debug` is a development dependency. Its toolbar middleware wraps the
+Inertia pipeline when the package is installed and exposes local-only request
+history and `/debug` routes. The home page applies the same local-IP policy
+before showing its Debugger link.
 
-[![Follow on X](https://img.shields.io/badge/-Follow%20on%20X-1DA1F2.svg?style=for-the-badge&logo=x&logoColor=white&labelColor=000000)](https://x.com/Terabytesoftw)
+See the [debugger notes](docs/debugger.md) for the integration details and
+reference captures.
+
+## Project map
+
+```text
+config/routes.php                 Named Yii 3 routes
+config/di/application.php         PSR-15 middleware pipeline
+config/di/vite.php                Vite configuration
+config/params.php                 Application and Inertia parameters
+public/index.php                  Dotenv and HTTP application bootstrap
+resources/js/app.ts               Typed Inertia and Vue bootstrap
+resources/js/composables/         Persistent theme state
+resources/js/layouts/             Persistent Vue application shell
+resources/js/pages/Home.vue       Home page and Inertia demonstrations
+resources/js/styles/app.css       Application visual system
+resources/views/app.php           Initial Inertia HTML document
+src/Web/Workbench/HomeAction.php  Home props and scroll pagination
+tests/Web/                        Essential browser-level application tests
+```
+
+## Yii references
+
+- [Official Yii 3 guide](https://yiisoft.github.io/docs/guide/)
+- [Moving from Yii 2](https://yiisoft.github.io/docs/guide/intro/upgrade-from-v2.html)
+  explains how to rebuild and verify one application flow at a time. Keeping a
+  mature Yii 2 application running can also be a valid choice.
+- [Yii 3 release announcement](https://www.yiiframework.com/news/777/yii3-is-released)
+- [Official Yii packages](https://github.com/yiisoft)
+
+## Quality checks
+
+```shell
+npm run typecheck
+npm run build
+composer tests
+composer static
+composer check-dependencies
+vendor/bin/ecs check --ansi
+```
+
+PHPStan runs at maximum level. Use `composer ecs` when you intentionally want
+to apply coding-standard fixes. The Web suite covers the home page, its feed
+pagination, and the application-owned 404 response without duplicating tests
+for framework or tooling packages.
 
 ## License
 
-[![License](https://img.shields.io/badge/License-BSD--3--Clause-brightgreen.svg?style=for-the-badge&logo=opensourceinitiative&logoColor=white&labelColor=555555)](LICENSE)
+The application is released under the BSD 3-Clause License. See `LICENSE`.
