@@ -93,14 +93,13 @@ final readonly class HomeAction
         ],
     ];
 
-    public function __construct(private Inertia $inertia, private LocalAccessChecker|null $accessChecker = null) {}
+    public function __construct(private Inertia $inertia) {}
 
     public function __invoke(ServerRequestInterface $request): ResponseInterface
     {
         return $this->inertia->render(
             'Home',
             [
-                'canAccessDebug' => $this->accessChecker?->allows($request) ?? false,
                 'runtime' => self::runtimeSnapshot(...),
                 'requestFeed' => self::requestFeed($request),
                 'ecosystem' => Prop::defer(

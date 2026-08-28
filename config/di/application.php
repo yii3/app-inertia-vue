@@ -3,8 +3,6 @@
 declare(strict_types=1);
 
 use App\Web\NotFound\NotFoundHandler;
-use App\Web\Workbench\HomeAction;
-use Yii3\Debug\Web\LocalAccessChecker;
 use Yii3\Inertia\Middleware\{CsrfTokenCookieMiddleware, InertiaMiddleware};
 use Yiisoft\Csrf\CsrfTokenMiddleware;
 use Yiisoft\Definitions\{DynamicReference, Reference};
@@ -28,11 +26,6 @@ $middlewares = [
 ];
 
 return [
-    HomeAction::class => [
-        '__construct()' => [
-            'accessChecker' => Reference::optional(LocalAccessChecker::class),
-        ],
-    ],
     Application::class => [
         '__construct()' => [
             'dispatcher' => DynamicReference::to(
