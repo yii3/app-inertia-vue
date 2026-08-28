@@ -6,7 +6,7 @@ settings:
 
 paths:
   tests: tests
-  output: tests/output
+  output: runtime/output
   data: tests/Support/Data
   support: tests/Support
 
