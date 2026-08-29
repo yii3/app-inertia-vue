@@ -2,25 +2,47 @@
 
 declare(strict_types=1);
 
-$root = dirname(__DIR__);
-
-$manifestPath = "{$root}/public/build/.vite/manifest.json";
-
-$manifestModifiedAt = is_file($manifestPath) ? filemtime($manifestPath) : false;
+use PHPForge\Vite\Configuration\{DevelopmentConfiguration, ProductionConfiguration};
+use Yii3\Inertia\Middleware\{CsrfTokenCookieMiddleware, InertiaMiddleware};
+use Yiisoft\Csrf\CsrfTokenMiddleware;
+use Yiisoft\ErrorHandler\Middleware\ErrorCatcher;
+use Yiisoft\Request\Body\RequestBodyParser;
+use Yiisoft\RequestProvider\RequestCatcherMiddleware;
+use Yiisoft\Router\Middleware\Router;
+use Yiisoft\Session\SessionMiddleware;
 
 return [
+    'php-forge/vite' => [
+        'configuration' => ($_SERVER['APP_ENV'] ?? 'prod') === 'dev'
+            ? DevelopmentConfiguration::create(
+                devServerUrl: 'http://127.0.0.1:5173',
+            )
+            : ProductionConfiguration::create(
+                manifestPath: dirname(__DIR__) . '/public/build/.vite/manifest.json',
+                assetBaseUrl: '/build',
+            ),
+        'entrypoints' => ['resources/js/app.ts'],
+    ],
+    'yiisoft/aliases' => [
+        'aliases' => require __DIR__ . '/aliases.php',
+    ],
+    'yiisoft/middleware-dispatcher' => [
+        'middlewares' => [
+            InertiaMiddleware::class,
+            ErrorCatcher::class,
+            SessionMiddleware::class,
+            RequestBodyParser::class,
+            CsrfTokenCookieMiddleware::class,
+            CsrfTokenMiddleware::class,
+            RequestCatcherMiddleware::class,
+            Router::class,
+        ],
+    ],
     'yiisoft/yii-console' => [
         'serve' => [
             'options' => [
                 'port' => '8081',
             ],
-        ],
-    ],
-    'yii3/debug' => [
-        'application' => [
-            'charset' => 'UTF-8',
-            'language' => 'en',
-            'name' => 'Yii 3 + Inertia + Vue',
         ],
     ],
     'yii3/inertia' => [
@@ -29,7 +51,6 @@ return [
         'language' => 'en',
         'charset' => 'UTF-8',
         'title' => 'Yii 3 + Inertia + Vue',
-        'version' => $manifestModifiedAt === false ? null : (string) $manifestModifiedAt,
         'shared' => [
             'app' => [
                 'edition' => 'Yii 3 / Inertia 3 / Vue 3.5',
@@ -37,8 +58,5 @@ return [
                 'repository' => 'yii3/app-inertia-vue',
             ],
         ],
-    ],
-    'yiisoft/aliases' => [
-        'aliases' => require __DIR__ . '/aliases.php',
     ],
 ];

@@ -11,14 +11,15 @@ require_once __DIR__ . '/vendor/autoload.php';
 Dotenv::createImmutable(__DIR__)->safeLoad();
 
 $debug = filter_var($_SERVER['APP_DEBUG'] ?? false, FILTER_VALIDATE_BOOL);
-
 $environment = $_SERVER['APP_ENV'] ?? 'prod';
+
+$environment = is_string($environment) ? $environment : 'prod';
 
 $consoleRunner = new ConsoleApplicationRunner(
     rootPath: __DIR__,
     debug: $debug,
     checkEvents: $debug,
-    environment: is_string($environment) ? $environment : 'prod',
+    environment: $environment,
 );
 
 $consoleRunner->run();

@@ -3,26 +3,22 @@
 declare(strict_types=1);
 
 use App\Web\NotFound\NotFoundHandler;
-use Yii3\Inertia\Middleware\{CsrfTokenCookieMiddleware, InertiaMiddleware};
-use Yiisoft\Csrf\CsrfTokenMiddleware;
+use PHPForge\Vite\Vite;
 use Yiisoft\Definitions\{DynamicReference, Reference};
-use Yiisoft\ErrorHandler\Middleware\ErrorCatcher;
 use Yiisoft\Middleware\Dispatcher\MiddlewareDispatcher;
-use Yiisoft\Request\Body\RequestBodyParser;
-use Yiisoft\RequestProvider\RequestCatcherMiddleware;
-use Yiisoft\Router\Middleware\Router;
-use Yiisoft\Session\SessionMiddleware;
 use Yiisoft\Yii\Http\Application;
 
+/**
+ * @var array{
+ *     'php-forge/vite': array<string, mixed>,
+ *     'yiisoft/middleware-dispatcher': array{middlewares: list<class-string>, prepend?: list<class-string>}
+ * } $params
+ */
+$middlewareDispatcher = $params['yiisoft/middleware-dispatcher'];
+
 $middlewares = [
-    InertiaMiddleware::class,
-    ErrorCatcher::class,
-    SessionMiddleware::class,
-    RequestBodyParser::class,
-    CsrfTokenCookieMiddleware::class,
-    CsrfTokenMiddleware::class,
-    RequestCatcherMiddleware::class,
-    Router::class,
+    ...($middlewareDispatcher['prepend'] ?? []),
+    ...$middlewareDispatcher['middlewares'],
 ];
 
 return [
@@ -38,5 +34,8 @@ return [
             ),
             'fallbackHandler' => Reference::to(NotFoundHandler::class),
         ],
+    ],
+    Vite::class => [
+        '__construct()' => $params['php-forge/vite'],
     ],
 ];

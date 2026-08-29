@@ -20,8 +20,8 @@ The home page demonstrates the integration with working application behavior:
 - **Infinite scroll** exposes `requestFeed` through `Prop::scroll()`. The server
   provides cursor metadata, Inertia merges `requestFeed.data`, and Vue appends
   each three-event page inside a contained scroll region.
-- **Explore** links to the local debugger when access is allowed, the official
-  Yii 3 guide, the neutral Yii 2 upgrade guide, and the application source.
+- **Explore** links to the official Yii 3 guide, the neutral Yii 2 upgrade
+  guide, and the application source.
 - A persistent light and dark theme follows the operating-system preference
   until the visitor chooses a mode, then stores that choice locally.
 
@@ -53,39 +53,43 @@ Open [http://localhost:8081](http://localhost:8081).
 
 ## Vite development server
 
-For hot module replacement, set `VITE_DEV_SERVER=true` in `.env`, then run the
-Vite and Yii development servers in separate terminals:
+For hot module replacement, run the Vite and Yii development servers in
+separate terminals:
 
 ```shell
 npm run dev
 ```
 
 ```shell
-./yii serve
+APP_ENV=dev ./yii serve
 ```
 
 The PHP application continues to own routing and the initial HTML response.
-Vite serves the Vue entrypoint and hot updates. In production mode,
-`PHPForge\Vite\Vite` reads `public/build/.vite/manifest.json`; the manifest
-modification time also provides the Inertia asset version.
+`APP_ENV=dev` selects Vite's development configuration. Every other environment
+uses the production configuration, where
+`PHPForge\Vite\Vite` owns loading and caching
+`public/build/.vite/manifest.json`. The manifest's SHA-256 hash also provides
+the Inertia asset version so clients reload after built asset references change.
 
 ## Debugger
 
-`yii3/debug` is a development dependency. Its toolbar middleware wraps the
-Inertia pipeline when the package is installed and exposes local-only request
-history and `/debug` routes. The home page applies the same local-IP policy
-before showing its Debugger link.
+`yii3/debug` is a development dependency. The package contributes its toolbar
+to the application's `yiisoft/middleware-dispatcher` parameters without an
+application middleware reference to the debugger. The package also owns the
+local-only `/debug`, `/debug/view`, `/debug/php-info`, and `/debug/toolbar` routes and
+their Yii IP filtering. The Yii and PHP toolbar chips open the shared Debug Core
+Configuration and phpinfo pages. The foundational History page persists and
+displays minimal request summaries with filtering and pagination. It has no
+application-specific request panels, collectors, or instrumentation.
 
-See the [debugger notes](docs/debugger.md) for the integration details and
-reference captures.
+See the [debugger notes](docs/debugger.md) for the integration details.
 
 ## Project map
 
 ```text
 config/routes.php                 Named Yii 3 routes
-config/di/application.php         PSR-15 middleware pipeline
-config/di/vite.php                Vite configuration
-config/params.php                 Application and Inertia parameters
+config/di/application.php         Application and Vite DI definitions
+config/params.php                 Vite, middleware, Inertia, and application parameters
 public/index.php                  Dotenv and HTTP application bootstrap
 resources/js/app.ts               Typed Inertia and Vue bootstrap
 resources/js/composables/         Persistent theme state
