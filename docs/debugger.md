@@ -19,7 +19,7 @@ the Yii, PHP, memory, Config, copy-link, and theme top bar. Extension panels wil
 appear in a separate Extensions group when they are introduced. The integration
 has no application-specific request panels, collectors, or instrumentation.
 
-Start the application and open `http://localhost:8081`. An eligible HTML
+Start the application and open `http://localhost:8081`. Eligible HTML
 requests appear in its AJAX indicator. Selecting the toolbar title opens History,
 selecting Yii opens the live
 Configuration page for the generated request tag; selecting PHP opens phpinfo

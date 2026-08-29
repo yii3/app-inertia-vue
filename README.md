@@ -68,7 +68,8 @@ The PHP application continues to own routing and the initial HTML response.
 `APP_ENV=dev` selects Vite's development configuration. Every other environment
 uses the production configuration, where
 `PHPForge\Vite\Vite` owns loading and caching
-`public/build/.vite/manifest.json`.
+`public/build/.vite/manifest.json`. The manifest's SHA-256 hash also provides
+the Inertia asset version so clients reload after built asset references change.
 
 ## Debugger
 
