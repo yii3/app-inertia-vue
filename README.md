@@ -46,7 +46,7 @@ cp .env.example .env
 Start the application on port 8081:
 
 ```shell
-./yii serve
+APP_ENV=debug APP_DEBUG=true ./yii serve
 ```
 
 Open [http://localhost:8081](http://localhost:8081).
@@ -61,7 +61,7 @@ npm run dev
 ```
 
 ```shell
-APP_ENV=dev ./yii serve
+APP_ENV=dev APP_DEBUG=true ./yii serve
 ```
 
 The PHP application continues to own routing and the initial HTML response.
@@ -75,12 +75,17 @@ the Inertia asset version so clients reload after built asset references change.
 
 `yii3/debug` is a development dependency. The package contributes its toolbar
 to the application's `yiisoft/middleware-dispatcher` parameters without an
-application middleware reference to the debugger. The package also owns the
-local-only `/debug`, `/debug/view`, `/debug/php-info`, and `/debug/toolbar` routes and
-their Yii IP filtering. The Yii and PHP toolbar chips open the shared Debug Core
-Configuration and phpinfo pages. The foundational History page persists and
-displays minimal request summaries with filtering and pagination. It has no
-application-specific request panels, collectors, or instrumentation.
+application middleware reference to the debugger. The application explicitly
+composes the Inertia collector, panel, and page observer in its `debug`, `dev`,
+and `test` environments. Production keeps that integration absent without
+runtime package detection.
+
+The package owns the local-only `/debug`, `/debug/view`, `/debug/php-info`, and
+`/debug/toolbar` routes and their Yii IP filtering. The Yii and PHP toolbar
+chips open the shared Debug Core Configuration and phpinfo pages. A captured
+Inertia response adds an Inertia chip linked to its component, page metadata,
+props, negotiation headers, and redacted raw payload. The History page persists
+request summaries with filtering and pagination.
 
 See the [debugger notes](docs/debugger.md) for the integration details.
 
@@ -89,6 +94,7 @@ See the [debugger notes](docs/debugger.md) for the integration details.
 ```text
 config/routes.php                 Named Yii 3 routes
 config/di/application.php         Application and Vite DI definitions
+config/environments/debug/        Explicit non-production debugger integration
 config/params.php                 Vite, middleware, Inertia, and application parameters
 public/index.php                  Dotenv and HTTP application bootstrap
 resources/js/app.ts               Typed Inertia and Vue bootstrap

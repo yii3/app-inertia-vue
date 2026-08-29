@@ -19,10 +19,10 @@ require_once $root . '/vendor/autoload.php';
 
 Dotenv::createImmutable($root)->safeLoad();
 
-$environment = $_SERVER['APP_ENV'] ?? 'prod';
+$environment = $_SERVER['APP_ENV'] ?? getenv('APP_ENV');
 
-$environment = is_string($environment) ? $environment : 'prod';
-$debug = filter_var($_SERVER['APP_DEBUG'] ?? false, FILTER_VALIDATE_BOOL);
+$environment = is_string($environment) && $environment !== '' ? $environment : 'prod';
+$debug = filter_var($_SERVER['APP_DEBUG'] ?? getenv('APP_DEBUG'), FILTER_VALIDATE_BOOL);
 
 // PHP built-in server routing.
 if (PHP_SAPI === 'cli-server') {
