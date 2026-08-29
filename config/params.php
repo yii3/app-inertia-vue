@@ -11,7 +11,12 @@ use Yiisoft\RequestProvider\RequestCatcherMiddleware;
 use Yiisoft\Router\Middleware\Router;
 use Yiisoft\Session\SessionMiddleware;
 
-$environment = $_SERVER['APP_ENV'] ?? getenv('APP_ENV');
+$environment = getenv('APP_ENV');
+
+if ($environment === false || $environment === '') {
+    $environment = $_SERVER['APP_ENV'] ?? 'prod';
+}
+
 $environment = is_string($environment) && $environment !== '' ? $environment : 'prod';
 
 return [
