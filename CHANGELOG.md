@@ -8,3 +8,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## 0.1.0 Under development
 
 - feat: create the Yii 3 Inertia Vue reference application.
+- feat: integrate the Yii 3 debugger with protected pages, toolbar access, request history, AJAX tracking, and package-owned middleware.

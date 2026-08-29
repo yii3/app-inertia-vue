@@ -17,32 +17,12 @@ if (filter_var(getenv('YII_C3'), FILTER_VALIDATE_BOOL)) {
 
 require_once $root . '/vendor/autoload.php';
 
-$dotenv = Dotenv::createImmutable($root);
+Dotenv::createImmutable($root)->safeLoad();
 
-$dotenv->safeLoad();
-
-$dotenv
-    ->ifPresent('APP_ENV')
-    ->allowedValues(
-        [
-            'dev',
-            'test',
-            'prod',
-        ],
-    );
-$dotenv
-    ->ifPresent(
-        [
-            'APP_DEBUG',
-            'VITE_DEV_SERVER',
-        ],
-    )
-    ->isBoolean();
-
-$environment = $_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? 'prod';
+$environment = $_SERVER['APP_ENV'] ?? 'prod';
 
 $environment = is_string($environment) ? $environment : 'prod';
-$debug = filter_var($_SERVER['APP_DEBUG'] ?? $_ENV['APP_DEBUG'] ?? false, FILTER_VALIDATE_BOOL);
+$debug = filter_var($_SERVER['APP_DEBUG'] ?? false, FILTER_VALIDATE_BOOL);
 
 // PHP built-in server routing.
 if (PHP_SAPI === 'cli-server') {

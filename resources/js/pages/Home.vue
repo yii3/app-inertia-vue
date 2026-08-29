@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Deferred, Head, InfiniteScroll, router, usePage } from "@inertiajs/vue3";
-import { computed, ref } from "vue";
+import { ref } from "vue";
 
 import DeferredDiagnostics from "@/components/DeferredDiagnostics.vue";
 import AppShell from "@/layouts/AppShell.vue";
@@ -22,7 +22,6 @@ interface ExploreItem {
 defineOptions({ layout: AppShell });
 
 const props = defineProps<{
-    canAccessDebug: boolean;
     ecosystem?: EcosystemDiagnostics;
     requestFeed: RequestFeed;
     runtime: RuntimeSnapshot;
@@ -78,10 +77,10 @@ const architectureProofs = [
         signal: "ORDERED PIPELINE",
         accent: "green",
         href: "https://yiisoft.github.io/docs/guide/structure/middleware.html",
-        file: "config/di/application.php",
+        file: "config/params.php",
         request: "PSR-15",
         code: [
-            { text: "'withMiddlewares()' => [[", emphasis: true },
+            { text: "'middlewares' => [", emphasis: true },
             { text: "    InertiaMiddleware::class," },
             { text: "    ErrorCatcher::class," },
             { text: "    SessionMiddleware::class," },
@@ -90,7 +89,7 @@ const architectureProofs = [
             { text: "    CsrfTokenMiddleware::class," },
             { text: "    RequestCatcherMiddleware::class," },
             { text: "    Router::class,", emphasis: true },
-            { text: "]]," },
+            { text: "]," },
         ],
         note: "The array is the executable request topology used by this application.",
         facts: [
@@ -150,50 +149,35 @@ const stack = [
     },
 ];
 
-const exploreItems = computed<ExploreItem[]>(() => {
-    const items: ExploreItem[] = [
-        {
-            eyebrow: "Upgrade guide",
-            title: "Plan the move from Yii 2",
-            description:
-                "Use the official guide to rebuild one verified application flow at a time while keeping mature Yii 2 applications running.",
-            href: "https://yiisoft.github.io/docs/guide/intro/upgrade-from-v2.html",
-            label: "Read the upgrade guide",
-            external: true,
-        },
-        {
-            eyebrow: "Authoritative guide",
-            title: "Build with Yii 3",
-            description:
-                "Read the official application guide for configuration, dependency injection, middleware, and package conventions.",
-            href: "https://yiisoft.github.io/docs/guide/",
-            label: "Read the Yii 3 guide",
-            external: true,
-        },
-        {
-            eyebrow: "Application source",
-            title: "Start from a working app",
-            description:
-                "Explore the complete Yii, Inertia, Vue, and Vite application structure on GitHub.",
-            href: "https://github.com/yii3/app-inertia-vue",
-            label: "View the source",
-            external: true,
-        },
-    ];
-
-    if (props.canAccessDebug) {
-        items.splice(1, 0, {
-            eyebrow: "Local diagnostics",
-            title: "Open the Yii debugger",
-            description:
-                "Inspect requests, events, configuration, and timings through the local-IP-only development interface.",
-            href: "/debug",
-            label: "Inspect this request",
-        });
-    }
-
-    return items;
-});
+const exploreItems: ExploreItem[] = [
+    {
+        eyebrow: "Upgrade guide",
+        title: "Plan the move from Yii 2",
+        description:
+            "Use the official guide to rebuild one verified application flow at a time while keeping mature Yii 2 applications running.",
+        href: "https://yiisoft.github.io/docs/guide/intro/upgrade-from-v2.html",
+        label: "Read the upgrade guide",
+        external: true,
+    },
+    {
+        eyebrow: "Authoritative guide",
+        title: "Build with Yii 3",
+        description:
+            "Read the official application guide for configuration, dependency injection, middleware, and package conventions.",
+        href: "https://yiisoft.github.io/docs/guide/",
+        label: "Read the Yii 3 guide",
+        external: true,
+    },
+    {
+        eyebrow: "Application source",
+        title: "Start from a working app",
+        description:
+            "Explore the complete Yii, Inertia, Vue, and Vite application structure on GitHub.",
+        href: "https://github.com/yii3/app-inertia-vue",
+        label: "View the source",
+        external: true,
+    },
+];
 
 function replayRequest(): void {
     router.reload({
