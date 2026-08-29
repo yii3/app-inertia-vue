@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Web;
 
 use App\Tests\Support\WebTester;
+use RuntimeException;
 
 final class HomePageCest
 {
@@ -16,6 +17,24 @@ final class HomePageCest
         $I->seeInSource('<title data-inertia>Yii 3 + Inertia + Vue</title>');
         $I->seeInSource('"component":"Home"');
         $I->seeInSource('<div id="app"></div>');
+    }
+
+    public function inertiaDebugToolbar(WebTester $I): void
+    {
+        $I->wantTo('inspect the captured Inertia component from the debug toolbar.');
+        $I->amOnPage('/');
+
+        $dataUrl = $I->grabAttributeFrom('#yii-debug-toolbar', 'data-url');
+
+        if (!is_string($dataUrl) || $dataUrl === '') {
+            throw new RuntimeException('The debug toolbar data URL must be present.');
+        }
+
+        $I->amOnPage($dataUrl);
+        $I->canSeeResponseCodeIs(200);
+        $I->seeInSource('"id": "inertia"');
+        $I->seeInSource('"icon": "inertia"');
+        $I->seeInSource('"value": "Home"');
     }
 
     public function requestedFeedPage(WebTester $I): void

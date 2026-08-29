@@ -11,9 +11,17 @@ use Yiisoft\RequestProvider\RequestCatcherMiddleware;
 use Yiisoft\Router\Middleware\Router;
 use Yiisoft\Session\SessionMiddleware;
 
+$environment = getenv('APP_ENV');
+
+if ($environment === false || $environment === '') {
+    $environment = $_SERVER['APP_ENV'] ?? 'prod';
+}
+
+$environment = is_string($environment) && $environment !== '' ? $environment : 'prod';
+
 return [
     'php-forge/vite' => [
-        'configuration' => ($_SERVER['APP_ENV'] ?? 'prod') === 'dev'
+        'configuration' => $environment === 'dev'
             ? DevelopmentConfiguration::create(
                 devServerUrl: 'http://127.0.0.1:5173',
             )

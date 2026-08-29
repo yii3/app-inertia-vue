@@ -14,9 +14,16 @@ return [
         'routes' => 'routes.php',
     ],
     'config-plugin-environments' => [
-        'dev' => [],
-        'test' => [],
+        'debug' => [
+            'di-web' => 'environments/debug/di-web.php',
+        ],
+        'dev' => [
+            'di-web' => 'environments/debug/di-web.php',
+        ],
         'prod' => [],
+        'test' => [
+            'di-web' => 'environments/debug/di-web.php',
+        ],
     ],
     'config-plugin-options' => [
         'source-directory' => 'config',

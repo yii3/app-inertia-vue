@@ -2,26 +2,34 @@
 
 The application installs `yii3/debug` as a development dependency through the
 local `../debug` Composer path repository. Yii Config loads the package's
-parameters, DI definitions, protected routes, and toolbar middleware. The
-application does not reference debugger classes in its own configuration.
+parameters, DI definitions, protected routes, and toolbar middleware.
 
 The package contributes `/debug`, `/debug/view`, `/debug/php-info`, and `/debug/toolbar`.
 These routes are protected with Yii `IpFilter`, and access is restricted to
 `127.0.0.1` and `::1` by default. Toolbar injection uses the same IP-range
 configuration.
 
-This foundational phase provides the Yii and PHP version metadata, their linked
-Debug Core Configuration and phpinfo pages, toolbar injection, AJAX request
-tracking, and the History grid. The package persists only the request summaries
-needed by the grid and sidebar. The shared Yii-style shell places the current or
-newest request card above History, the only primary sidebar item, and includes
-the Yii, PHP, memory, Config, copy-link, and theme top bar. Extension panels will
-appear in a separate Extensions group when they are introduced. The integration
-has no application-specific request panels, collectors, or instrumentation.
+The debugger does not discover optional packages at runtime. The application
+explicitly registers `InertiaCollector` and `InertiaPanel` in an
+`ExtensionRegistry`. Its non-production web configuration also provides an
+application-owned `ResolvedPageObserverInterface` adapter that passes the
+resolved page and shared-prop keys to the same collector instance. The `debug`,
+`dev`, and `test` environments load this composition; `prod` does not.
 
-Start the application and open `http://localhost:8081`. Eligible HTML
-requests appear in its AJAX indicator. Selecting the toolbar title opens History,
-selecting Yii opens the live
-Configuration page for the generated request tag; selecting PHP opens phpinfo
-in a new tab. The toolbar runtime forwards the active light or dark theme in
-both links.
+The toolbar presents the Yii and PHP versions, AJAX activity, and the captured
+Inertia component. Selecting Inertia opens the extension panel with page
+metadata, visit type, shared and page props, protocol headers, version-conflict
+diagnostics, and the redacted raw payload. Requests without an Inertia component
+do not add an empty toolbar chip.
+
+To use built frontend assets with the debugger, start the application with:
+
+```shell
+APP_ENV=debug APP_DEBUG=true ./yii serve
+```
+
+Open `http://localhost:8081`. A fresh Inertia response creates the snapshot
+needed by the chip; captures created before the extension was registered remain
+unchanged. Selecting the toolbar title opens History, selecting Yii opens the
+live Configuration page, and selecting PHP opens phpinfo in a new tab. The
+toolbar runtime forwards the active light or dark theme in every debug link.
