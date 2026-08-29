@@ -43,7 +43,7 @@ if (PHP_SAPI === 'cli-server') {
 // Run HTTP application runner
 $runner = new HttpApplicationRunner(
     rootPath: $root,
-    debug: true,
+    debug: $debug,
     checkEvents: $debug,
     environment: $environment,
     bootstrapGroup: 'bootstrap',
