@@ -10,3 +10,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - feat: create the Yii 3 Inertia Vue reference application.
 - feat: integrate the Yii 3 debugger with protected pages, toolbar access, request history, AJAX tracking, and package-owned middleware.
 - feat: compose Inertia debug components in non-production and honor shell `APP_ENV`/`APP_DEBUG` in PHP built-in server requests.
+- feat: expose native Vite configuration and manifest data through the debugger extension registry.

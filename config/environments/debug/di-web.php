@@ -3,18 +3,29 @@
 declare(strict_types=1);
 
 use PHPForge\Inertia\Page;
-use Yii3\Debug\Collector\InertiaCollector;
+use PHPForge\Vite\Manifest\ManifestLoader;
+use Yii3\Debug\Collector\{InertiaCollector, ViteCollector};
 use Yii3\Debug\ExtensionRegistry;
-use Yii3\Debug\Panel\InertiaPanel;
+use Yii3\Debug\Panel\{InertiaPanel, VitePanel};
 use Yii3\Inertia\ResolvedPageObserverInterface;
+use Yiisoft\Definitions\Reference;
 
+/** @var array{'php-forge/vite': array<string, mixed>} $params */
 return [
+    ViteCollector::class => [
+        '__construct()' => [
+            ...$params['php-forge/vite'],
+            'manifestLoader' => Reference::optional(ManifestLoader::class),
+        ],
+    ],
     ExtensionRegistry::class => static fn(
-        InertiaCollector $collector,
-        InertiaPanel $panel,
+        InertiaCollector $inertiaCollector,
+        InertiaPanel $inertiaPanel,
+        ViteCollector $viteCollector,
+        VitePanel $vitePanel,
     ): ExtensionRegistry => new ExtensionRegistry(
-        collectors: [$collector],
-        panels: [$panel],
+        collectors: [$inertiaCollector, $viteCollector],
+        panels: [$inertiaPanel, $vitePanel],
     ),
     ResolvedPageObserverInterface::class => static fn(
         InertiaCollector $collector,

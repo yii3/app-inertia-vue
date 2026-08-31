@@ -76,16 +76,17 @@ the Inertia asset version so clients reload after built asset references change.
 `yii3/debug` is a development dependency. The package contributes its toolbar
 to the application's `yiisoft/middleware-dispatcher` parameters without an
 application middleware reference to the debugger. The application explicitly
-composes the Inertia collector, panel, and page observer in its `debug`, `dev`,
-and `test` environments. Production keeps that integration absent without
-runtime package detection.
+composes the Inertia collector, panel, and page observer with the Vite collector
+and panel in its `debug`, `dev`, and `test` environments. Production keeps that integration absent without runtime package
+detection.
 
 The package owns the local-only `/debug`, `/debug/view`, `/debug/php-info`, and
 `/debug/toolbar` routes and their Yii IP filtering. The Yii and PHP toolbar
 chips open the shared Debug Core Configuration and phpinfo pages. A captured
 Inertia response adds an Inertia chip linked to its component, page metadata,
-props, negotiation headers, and redacted raw payload. The History page persists
-request summaries with filtering and pagination.
+props, negotiation headers, and redacted raw payload. Vite adds its
+runtime mode and exposes normalized configuration and production manifest chunks.
+The History page persists request summaries with filtering and pagination.
 
 See the [debugger notes](docs/debugger.md) for the integration details.
 
