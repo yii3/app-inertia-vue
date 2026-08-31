@@ -9,19 +9,9 @@ use RuntimeException;
 
 final class HomePageCest
 {
-    public function homePage(WebTester $I): void
+    public function extensionDebugToolbar(WebTester $I): void
     {
-        $I->wantTo('open the application home page.');
-        $I->amOnPage('/');
-        $I->canSeeResponseCodeIs(200);
-        $I->seeInSource('<title data-inertia>Yii 3 + Inertia + Vue</title>');
-        $I->seeInSource('"component":"Home"');
-        $I->seeInSource('<div id="app"></div>');
-    }
-
-    public function inertiaDebugToolbar(WebTester $I): void
-    {
-        $I->wantTo('inspect the captured Inertia component from the debug toolbar.');
+        $I->wantTo('inspect the captured Inertia and Vite integrations from the debug toolbar.');
         $I->amOnPage('/');
 
         $dataUrl = $I->grabAttributeFrom('#yii-debug-toolbar', 'data-url');
@@ -35,6 +25,19 @@ final class HomePageCest
         $I->seeInSource('"id": "inertia"');
         $I->seeInSource('"icon": "inertia"');
         $I->seeInSource('"value": "Home"');
+        $I->seeInSource('"id": "vite"');
+        $I->seeInSource('"icon": "brand-javascript"');
+        $I->seeInSource('"value": "Production"');
+    }
+
+    public function homePage(WebTester $I): void
+    {
+        $I->wantTo('open the application home page.');
+        $I->amOnPage('/');
+        $I->canSeeResponseCodeIs(200);
+        $I->seeInSource('<title data-inertia>Yii 3 + Inertia + Vue</title>');
+        $I->seeInSource('"component":"Home"');
+        $I->seeInSource('<div id="app"></div>');
     }
 
     public function requestedFeedPage(WebTester $I): void
