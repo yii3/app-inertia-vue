@@ -7,11 +7,13 @@ namespace App\Tests\Web;
 use App\Tests\Support\WebTester;
 use RuntimeException;
 
+use function is_string;
+
 final class HomePageCest
 {
     public function extensionDebugToolbar(WebTester $I): void
     {
-        $I->wantTo('inspect the captured Inertia and Vite integrations from the debug toolbar.');
+        $I->wantTo('inspect real request diagnostics and the Inertia and Vite integrations.');
         $I->amOnPage('/');
 
         $dataUrl = $I->grabAttributeFrom('#yii-debug-toolbar', 'data-url');
@@ -28,6 +30,14 @@ final class HomePageCest
         $I->seeInSource('"id": "vite"');
         $I->seeInSource('"icon": "brand-javascript"');
         $I->seeInSource('"value": "Production"');
+        $I->seeInSource('"id": "profiling"');
+        $I->seeInSource('"icon": "profiling"');
+        $I->seeInSource('"title": "Total processing time"');
+        $I->seeInSource('"title": "Peak memory"');
+        $I->seeInSource('"id": "log"');
+        $I->seeInSource('"icon": "logs"');
+        $I->seeInSource('"id": "event"');
+        $I->seeInSource('"icon": "events"');
     }
 
     public function homePage(WebTester $I): void

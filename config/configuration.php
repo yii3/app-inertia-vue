@@ -14,18 +14,13 @@ return [
         'routes' => 'routes.php',
     ],
     'config-plugin-environments' => [
-        'debug' => [
-            'di-web' => 'environments/debug/di-web.php',
-        ],
-        'dev' => [
-            'di-web' => 'environments/debug/di-web.php',
-        ],
+        'debug' => [],
+        'dev' => [],
         'prod' => [],
-        'test' => [
-            'di-web' => 'environments/debug/di-web.php',
-        ],
+        'test' => [],
     ],
     'config-plugin-options' => [
         'source-directory' => 'config',
+        'vendor-override-layer' => 'yii3/debug',
     ],
 ];

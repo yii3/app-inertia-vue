@@ -6,6 +6,7 @@ use PHPForge\Vite\Configuration\{DevelopmentConfiguration, ProductionConfigurati
 use Yii3\Inertia\Middleware\{CsrfTokenCookieMiddleware, InertiaMiddleware};
 use Yiisoft\Csrf\CsrfTokenMiddleware;
 use Yiisoft\ErrorHandler\Middleware\ErrorCatcher;
+use Yiisoft\Log\StreamTarget;
 use Yiisoft\Request\Body\RequestBodyParser;
 use Yiisoft\RequestProvider\RequestCatcherMiddleware;
 use Yiisoft\Router\Middleware\Router;
@@ -33,6 +34,17 @@ return [
     ],
     'yiisoft/aliases' => [
         'aliases' => require __DIR__ . '/aliases.php',
+    ],
+    'yiisoft/log' => [
+        'targets' => [
+            'stream' => StreamTarget::class,
+        ],
+    ],
+    'yii3/debug' => [
+        'extensions' => [
+            'inertia' => true,
+            'vite' => true,
+        ],
     ],
     'yiisoft/middleware-dispatcher' => [
         'middlewares' => [
