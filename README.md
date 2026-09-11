@@ -53,6 +53,8 @@
 ```bash
 # install the locked PHP and frontend dependencies
 composer install
+
+# install the locked Node.js dependencies
 npm ci
 
 # build production assets (one-shot; for live editing see the HMR workflow below)
@@ -137,7 +139,7 @@ framework or tooling packages.
 
 ## Documentation
 
-- 🐞 [Debugger integration](docs/debugger.md)
+- [Debugger integration](docs/debugger.md)
 
 ## Yii references
 
