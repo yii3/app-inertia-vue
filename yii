@@ -20,6 +20,7 @@ $consoleRunner = new ConsoleApplicationRunner(
     debug: $debug,
     checkEvents: $debug,
     environment: $environment,
+    configMergePlanFile: '../runtime/.merge-plan.php',
 );
 
 $consoleRunner->run();

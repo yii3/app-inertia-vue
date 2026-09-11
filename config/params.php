@@ -41,6 +41,9 @@ return [
         ],
     ],
     'yii3/debug' => [
+        'database' => [
+            'excessiveCallerThreshold' => 3,
+        ],
         'extensions' => [
             'inertia' => true,
             'vite' => true,

@@ -56,6 +56,7 @@ $runner = new HttpApplicationRunner(
     debug: $debug,
     checkEvents: $debug,
     environment: $environment,
+    configMergePlanFile: '../runtime/.merge-plan.php',
     bootstrapGroup: 'bootstrap',
     temporaryErrorHandler: new ErrorHandler(
         new Logger(
