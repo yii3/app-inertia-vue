@@ -21,6 +21,7 @@ return [
     ],
     'config-plugin-options' => [
         'source-directory' => 'config',
+        'merge-plan-file' => '../runtime/.merge-plan.php',
         'vendor-override-layer' => 'yii3/debug',
     ],
 ];

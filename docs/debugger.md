@@ -10,12 +10,13 @@ These routes are protected with Yii `IpFilter`, and access is restricted to
 configuration.
 
 The debugger does not discover optional packages at runtime. The application
-explicitly registers `InertiaCollector`, `InertiaPanel`, `ViteCollector`, and
-`VitePanel` in one `ExtensionRegistry`. Its non-production web configuration also
-provides an application-owned `ResolvedPageObserverInterface` adapter that passes
-the resolved page and shared-prop keys to the same Inertia collector instance.
-The `debug`, `dev`, and `test` environments load this composition; `prod` does
-not.
+opts in through the `yii3/debug.extensions` parameters, which register the
+provider-owned `PHPForge\Inertia\Debug\{InertiaCollector, InertiaPanel}` and
+`PHPForge\Vite\Debug\{ViteCollector, VitePanel}` and attach each collector as a
+PSR-14 listener. The container injects its event dispatcher into
+`PHPForge\Vite\Vite` and `PHPForge\Inertia\Protocol`, so the application needs no
+further wiring. The `debug`, `dev`, and `test` environments load this
+composition; `prod` does not.
 
 The toolbar presents the Yii and PHP versions, AJAX activity, the captured
 Inertia component, and the Vite runtime mode. Selecting Inertia opens the
