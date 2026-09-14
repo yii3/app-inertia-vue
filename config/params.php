@@ -41,6 +41,14 @@ return [
         ],
     ],
     'yii3/debug' => [
+        'application' => [
+            'name' => 'Yii 3 + Inertia + Vue',
+            'version' => '1.0',
+            'charset' => 'UTF-8',
+            'language' => 'en',
+            'sourceLanguage' => 'en',
+            'debug' => in_array($environment, ['debug', 'dev', 'test'], true),
+        ],
         'database' => [
             'excessiveCallerThreshold' => 3,
         ],
