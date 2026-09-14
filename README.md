@@ -51,17 +51,17 @@
 ## Quick start
 
 ```bash
-# install the locked PHP and frontend dependencies
-composer install
+# create a new Yii 3 application using the Inertia.js + Vue 3 template
+composer create-project --prefer-dist yii3/app-inertia-vue:^0.1@dev app-vue
+
+# navigate to the application directory
+cd app-vue
 
 # install the locked Node.js dependencies
 npm ci
 
 # build production assets (one-shot; for live editing see the HMR workflow below)
 npm run build
-
-# create the local environment file
-cp .env.example .env
 
 # start the development server on port 8081
 APP_ENV=debug APP_DEBUG=true ./yii serve
@@ -85,9 +85,13 @@ APP_ENV=dev APP_DEBUG=true ./yii serve
 How the pieces connect:
 
 - The PHP application continues to own routing and the initial HTML response.
-- `APP_ENV=dev` selects Vite's development configuration. Every other environment uses the production configuration,
-  where `PHPForge\Vite\Vite` owns loading and caching `public/build/.vite/manifest.json`.
+- `config/params.php` reads the `APP_ENV` environment variable. When it equals `dev`, the framework-agnostic Vite
+  facade is built with `DevelopmentConfiguration`, and the root view emits `<script>` tags pointing at
+  `http://127.0.0.1:5173` instead of the built manifest. Every other environment uses `ProductionConfiguration`, where
+  `PHPForge\Vite\Vite` owns loading and caching `public/build/.vite/manifest.json`.
+- Vue HMR is carried natively by `@vite/client` together with `@vitejs/plugin-vue`; no additional preamble is required.
 - The manifest's SHA-256 hash provides the Inertia asset version, so clients reload after built asset references change.
+- Before deploying, stop the Vite dev server, run `npm run build`, and set `APP_ENV` to `prod`, then serve `public/`.
 
 For manifest options, development-server behavior, and CORS configuration, see the
 [`php-forge/vite` documentation](https://github.com/php-forge/vite).

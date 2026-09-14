@@ -65,7 +65,7 @@
         "phpstan/phpstan-strict-rules": "^2.0.12",
         "rector/rector": "^2.6.6",
         "symfony/process": "^7.4.13 || ^8.1.6",
-        "yii3/debug": "^0.1",
+        "yii3/debug": "^0.1@dev",
         "yiisoft/db": "^2.0.1",
         "yiisoft/db-sqlite": "^2.0"
     },
