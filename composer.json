@@ -25,8 +25,7 @@
         "ext-filter": "*",
         "httpsoft/http-message": "^1.1.6",
         "php-forge/foxy": "^0.3",
-        "php-forge/inertia": "^0.4",
-        "php-forge/vite": "^0.4",
+        "php-forge/vite": "^0.5.1",
         "psr/container": "^2.0.2",
         "psr/http-factory": "^1.1",
         "psr/http-message": "^2.0",
@@ -51,8 +50,7 @@
         "yiisoft/session": "^3.0.2",
         "yiisoft/yii-http": "^1.1.1",
         "yiisoft/yii-runner-console": "^2.2.1",
-        "yiisoft/yii-runner-http": "^3.2.1",
-        "php-forge/debug": "^0.2"
+        "yiisoft/yii-runner-http": "^3.2.1"
     },
     "require-dev": {
         "codeception/c3": "^2.9",

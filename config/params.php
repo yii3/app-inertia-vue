@@ -2,9 +2,12 @@
 
 declare(strict_types=1);
 
-use PHPForge\Vite\Configuration\{DevelopmentConfiguration, ProductionConfiguration};
+use PHPForge\Vite\Configuration\ProductionConfiguration;
+use PHPForge\Vite\Debug\{ViteCollector, VitePanel};
+use PHPForge\Vite\Vite;
 use Yii3\Inertia\Middleware\{CsrfTokenCookieMiddleware, InertiaMiddleware};
 use Yiisoft\Csrf\CsrfTokenMiddleware;
+use Yiisoft\Definitions\Reference;
 use Yiisoft\ErrorHandler\Middleware\ErrorCatcher;
 use Yiisoft\Log\StreamTarget;
 use Yiisoft\Request\Body\RequestBodyParser;
@@ -12,24 +15,12 @@ use Yiisoft\RequestProvider\RequestCatcherMiddleware;
 use Yiisoft\Router\Middleware\Router;
 use Yiisoft\Session\SessionMiddleware;
 
-$environment = getenv('APP_ENV');
-
-if ($environment === false || $environment === '') {
-    $environment = $_SERVER['APP_ENV'] ?? 'prod';
-}
-
-$environment = is_string($environment) && $environment !== '' ? $environment : 'prod';
-
 return [
     'php-forge/vite' => [
-        'configuration' => $environment === 'dev'
-            ? DevelopmentConfiguration::create(
-                devServerUrl: 'http://127.0.0.1:5173',
-            )
-            : ProductionConfiguration::create(
-                manifestPath: dirname(__DIR__) . '/public/build/.vite/manifest.json',
-                assetBaseUrl: '/build',
-            ),
+        'configuration' => ProductionConfiguration::create(
+            manifestPath: dirname(__DIR__) . '/public/build/.vite/manifest.json',
+            assetBaseUrl: '/build',
+        ),
         'entrypoints' => ['resources/js/app.ts'],
     ],
     'yiisoft/aliases' => [
@@ -47,14 +38,15 @@ return [
             'charset' => 'UTF-8',
             'language' => 'en',
             'sourceLanguage' => 'en',
-            'debug' => in_array($environment, ['debug', 'dev', 'test'], true),
         ],
         'database' => [
             'excessiveCallerThreshold' => 3,
         ],
-        'extensions' => [
-            'inertia' => true,
-            'vite' => true,
+        'collectors' => [
+            'vite' => ViteCollector::class,
+        ],
+        'panels' => [
+            'vite' => VitePanel::class,
         ],
     ],
     'yiisoft/middleware-dispatcher' => [
@@ -67,6 +59,11 @@ return [
             CsrfTokenMiddleware::class,
             RequestCatcherMiddleware::class,
             Router::class,
+        ],
+    ],
+    'yiisoft/view' => [
+        'parameters' => [
+            'vite' => Reference::to(Vite::class),
         ],
     ],
     'yiisoft/yii-console' => [
