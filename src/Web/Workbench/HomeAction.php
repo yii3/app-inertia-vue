@@ -6,7 +6,6 @@ namespace App\Web\Workbench;
 
 use DateTimeImmutable;
 use DateTimeZone;
-use PHPForge\Inertia\Prop\{Prop, ScrollMetadata, ScrollProp};
 use Psr\Http\Message\{ResponseInterface, ServerRequestInterface};
 use Yii3\Inertia\Inertia;
 
@@ -96,12 +95,31 @@ final readonly class HomeAction
 
     public function __invoke(ServerRequestInterface $request): ResponseInterface
     {
+        [$page, $totalPages] = self::feedPage($request);
+
         return $this->inertia->render(
             'Home',
             [
                 'runtime' => self::runtimeSnapshot(...),
-                'requestFeed' => self::requestFeed($request),
-                'ecosystem' => Prop::defer(
+                'requestFeed' => $this->inertia->scroll(
+                    [
+                        'data' => array_slice(
+                            self::REQUEST_FEED,
+                            ($page - 1) * self::FEED_PAGE_SIZE,
+                            self::FEED_PAGE_SIZE,
+                        ),
+                        'page' => $page,
+                        'pages' => $totalPages,
+                        'total' => count(self::REQUEST_FEED),
+                    ],
+                    $this->inertia->scrollMetadata(
+                        pageName: 'feed',
+                        previousPage: $page > 1 ? $page - 1 : null,
+                        nextPage: $page < $totalPages ? $page + 1 : null,
+                        currentPage: $page,
+                    ),
+                ),
+                'ecosystem' => $this->inertia->defer(
                     static fn(): array => [
                         'checks' => [
                             'Constructor-injected invokable action',
@@ -123,38 +141,22 @@ final readonly class HomeAction
         );
     }
 
-    private static function requestFeed(ServerRequestInterface $request): ScrollProp
+    /**
+     * Resolves the requested page of the live Inertia scroll demonstration.
+     *
+     * @return array{int, int} Requested page clamped to the available range, and the total page count.
+     */
+    private static function feedPage(ServerRequestInterface $request): array
     {
-        $total = count(self::REQUEST_FEED);
-        $totalPages = intdiv($total + self::FEED_PAGE_SIZE - 1, self::FEED_PAGE_SIZE);
-
+        $totalPages = intdiv(count(self::REQUEST_FEED) + self::FEED_PAGE_SIZE - 1, self::FEED_PAGE_SIZE);
         $query = $request->getQueryParams();
-
         $requestedPage = filter_var(
             $query['feed'] ?? 1,
             FILTER_VALIDATE_INT,
             ['options' => ['min_range' => 1]],
         );
-        $page = is_int($requestedPage) ? min($requestedPage, $totalPages) : 1;
 
-        return Prop::scroll(
-            [
-                'data' => array_slice(
-                    self::REQUEST_FEED,
-                    ($page - 1) * self::FEED_PAGE_SIZE,
-                    self::FEED_PAGE_SIZE,
-                ),
-                'page' => $page,
-                'pages' => $totalPages,
-                'total' => $total,
-            ],
-            new ScrollMetadata(
-                pageName: 'feed',
-                previousPage: $page > 1 ? $page - 1 : null,
-                nextPage: $page < $totalPages ? $page + 1 : null,
-                currentPage: $page,
-            ),
-        );
+        return [is_int($requestedPage) ? min($requestedPage, $totalPages) : 1, $totalPages];
     }
 
     /**

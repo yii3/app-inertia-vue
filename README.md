@@ -85,10 +85,11 @@ APP_ENV=dev APP_DEBUG=true ./yii serve
 How the pieces connect:
 
 - The PHP application continues to own routing and the initial HTML response.
-- `config/params.php` reads the `APP_ENV` environment variable. When it equals `dev`, the framework-agnostic Vite
-  facade is built with `DevelopmentConfiguration`, and the root view emits `<script>` tags pointing at
-  `http://127.0.0.1:5173` instead of the built manifest. Every other environment uses `ProductionConfiguration`, where
-  `PHPForge\Vite\Vite` owns loading and caching `public/build/.vite/manifest.json`.
+- `APP_ENV` selects the Yii config environment. The `dev` overlay, `config/environments/dev/params.php`, builds the
+  framework-agnostic Vite facade with `DevelopmentConfiguration`, so the root view emits `<script>` tags pointing at
+  `http://127.0.0.1:5173` instead of the built manifest. Every other environment keeps the `ProductionConfiguration`
+  declared in `config/params.php`, where `PHPForge\Vite\Vite` owns loading and caching
+  `public/build/.vite/manifest.json`.
 - Vue HMR is carried natively by `@vite/client` together with `@vitejs/plugin-vue`; no additional preamble is required.
 - The manifest's SHA-256 hash provides the Inertia asset version, so clients reload after built asset references change.
 - Before deploying, stop the Vite dev server, run `npm run build`, and set `APP_ENV` to `prod`, then serve `public/`.

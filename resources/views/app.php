@@ -2,7 +2,10 @@
 
 declare(strict_types=1);
 
+use PHPForge\Vite\Html\HtmlRenderer;
+use PHPForge\Vite\Vite;
 use Yiisoft\Html\Html;
+use Yiisoft\View\WebView;
 
 /**
  * @var string $charset
@@ -11,8 +14,14 @@ use Yiisoft\Html\Html;
  * @var string $pageJson
  * @var string $title
  * @var array<string, mixed> $viewData
- * @var string $viteTags
+ * @var WebView $this
  */
+$vite = $this->getParameter('vite');
+
+if ($vite instanceof Vite === false) {
+    throw new RuntimeException('The "vite" view parameter must be a ' . Vite::class . ' instance.');
+}
+
 $defaultDescription = 'A working Yii 3 application with Inertia 3, Vue 3.5, and Vite 8.';
 $description = $viewData['description'] ?? $defaultDescription;
 $documentTitle = $viewData['title'] ?? $title;
@@ -64,7 +73,7 @@ if (!is_string($documentTitle)) {
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="/favicon.ico" sizes="any">
     <title data-inertia><?= Html::encode($documentTitle) ?></title>
-    <?= $viteTags ?>
+    <?= HtmlRenderer::create()->render($vite->resolve()) ?>
 </head>
 <body>
     <script data-page="<?= Html::encodeAttribute($id) ?>" type="application/json"><?= $pageJson ?></script>

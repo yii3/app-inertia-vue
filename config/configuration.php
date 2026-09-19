@@ -11,11 +11,14 @@ return [
         'di' => 'di/*.php',
         'di-web' => '$di',
         'di-console' => '$di',
+        'events-web' => 'events-web.php',
         'routes' => 'routes.php',
     ],
     'config-plugin-environments' => [
         'debug' => [],
-        'dev' => [],
+        'dev' => [
+            'params' => 'environments/dev/params.php',
+        ],
         'prod' => [],
         'test' => [],
     ],
