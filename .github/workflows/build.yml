@@ -21,9 +21,11 @@ jobs:
     with:
       codeception-command: >-
         APP_ENV=test APP_DEBUG=false YII_C3=true
-        vendor/bin/codecept run Web --coverage-xml
+        vendor/bin/codecept run Web
+      debug: true
       extensions: intl, sodium
       hook: npm run build
-      php-version: '["8.3","8.4","8.5"]'
+      php-version: '["8.3"]'
+      os: '["windows-latest"]'
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
