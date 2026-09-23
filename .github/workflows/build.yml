@@ -22,7 +22,8 @@ jobs:
       codeception-command: >-
         APP_ENV=test APP_DEBUG=false
         vendor/bin/codecept run Web --coverage-xml
-      debug: true
+      coverage-driver: xdebug
+      coverage-file: tests/support/output/coverage.xml
       extensions: intl, sodium
       hook: npm run build
       php-version: '["8.3","8.4","8.5"]'
