@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use PHPForge\Vite\Configuration\ProductionConfiguration;
+use PHPForge\Vite\Debug\{ViteCollector, VitePanel};
 use PHPForge\Vite\Vite;
 use Yii3\Inertia\Middleware\{CsrfTokenCookieMiddleware, InertiaMiddleware};
 use Yiisoft\Csrf\CsrfTokenMiddleware;
@@ -41,6 +42,9 @@ return [
         'database' => [
             'excessiveCallerThreshold' => 3,
         ],
+        // `yii3/inertia` registers the Inertia panel; Vite has no Yii3 adapter, so the application registers it.
+        'collectors' => ['vite' => ViteCollector::class],
+        'panels' => ['vite' => VitePanel::class],
     ],
     'yiisoft/middleware-dispatcher' => [
         'middlewares' => [
