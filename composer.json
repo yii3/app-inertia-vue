@@ -24,7 +24,7 @@
         "php": ">=8.3",
         "ext-filter": "*",
         "httpsoft/http-message": "^1.1.6",
-        "php-forge/foxy": "^0.3",
+        "php-forge/foxy": "^0.4",
         "php-forge/vite": "^0.5.1",
         "psr/container": "^2.0.2",
         "psr/http-factory": "^1.1",
